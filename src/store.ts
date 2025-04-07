@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import getNotesFromLocalStorage from './utils/getNotesFromLocalStorage';
 
 export interface Note {
   id: string;
@@ -20,7 +21,7 @@ interface NotesStore {
 const colors = ['yellow', 'pink', 'blue', 'green', 'purple'];
 
 export const useNotesStore = create<NotesStore>((set) => ({
-  notes: [],
+  notes: getNotesFromLocalStorage(),
   addNote: () => set((state) => ({
     notes: [...state.notes, {
       id: crypto.randomUUID(),
