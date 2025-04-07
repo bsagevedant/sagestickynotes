@@ -1,11 +1,14 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { PlusCircle } from 'lucide-react';
 import { Note } from './components/Note';
 import { useNotesStore } from './store';
+import updateNotesFromLocalStorage from './utils/updateNotesFromLocalStorage';
 
 function App() {
-  const { notes, addNote, updateNote, updatePosition, deleteNote } = useNotesStore();
+  const { notes, addNote, updateNote, updatePosition, deleteNote, bringToFront } = useNotesStore();
+
+  useEffect(() => updateNotesFromLocalStorage(notes), [notes]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
@@ -35,6 +38,7 @@ function App() {
             note={note}
             onUpdate={(content) => updateNote(note.id, content)}
             onDelete={() => deleteNote(note.id)}
+            onBringToFront={() => bringToFront(note.id)}
           />
         ))}
       </DndContext>
